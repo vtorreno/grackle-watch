@@ -1,0 +1,90 @@
+# ==========================================
+# Python & Environment
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+dist/
+build/
+.env
+*.env
+
+# ==========================================
+# uv (Python Package Manager)
+# ==========================================
+.python-version
+.uv/
+
+# ==========================================
+# Google Cloud Platform (GCP) & Security
+# ==========================================
+*.json
+service-account*.json
+credentials*.json
+auth/
+.gcp/
+
+# ==========================================
+# Terraform (Infrastructure as Code)
+# ==========================================
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
+
+# ==========================================
+# Docker
+# ==========================================
+*.tar
+docker-compose.override.yml
+.docker/
+
+# ==========================================
+# Kestra (Orchestration)
+# ==========================================
+bin/
+storage/
+.kestra/
+
+# ==========================================
+# dbt (Data Transformation)
+# ==========================================
+target/
+dbt_packages/
+packages/
+logs/
+dbt_modules/
+*.db
+
+# ==========================================
+# Apache Spark
+# ==========================================
+spark-warehouse/
+derby.log
+metastore_db/
+checkpoint/
+
+# ==========================================
+# Data Safety Net (Cloud-Native)
+# ==========================================
+*.csv
+*.parquet
+*.avro
+*.orc
+data/
+temp_data/
+
+# ==========================================
+# IDE & System
+# ==========================================
+.vscode/
+.idea/
+.ipynb_checkpoints/
+*.ipynb
+*.DS_Store
+Thumbs.db
+*.log
