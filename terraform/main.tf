@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.14"
+  required_version = ">= 1.14.8"
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -23,7 +23,7 @@ resource "random_id" "bucket_suffix" {
 
 resource "google_storage_bucket" "data_lake" {
   name          = "${var.gcs_bucket_name}-${random_id.bucket_suffix.hex}"
-  location      = var.region
+  location      = var.location
   storage_class = var.gcs_storage_class
   force_destroy = true
 
@@ -35,6 +35,15 @@ resource "google_storage_bucket" "data_lake" {
       type = "Delete"
     }
   }
+
+  public_access_prevention = "enforced"
+}
+
+resource "google_storage_bucket" "kestra_storage" {
+  name          = "${var.kestra_storage_bucket_name}-${random_id.bucket_suffix.hex}"
+  location      = var.location
+  storage_class = "STANDARD"
+  force_destroy = true
 
   public_access_prevention = "enforced"
 }

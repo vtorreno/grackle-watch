@@ -1,0 +1,64 @@
+services:
+  kestra-postgres:
+    image: postgres:18-alpine
+    container_name: kestra-postgres
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - kestra-postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kestra-network
+
+  kestra-server:
+    image: kestra/kestra:latest
+    container_name: kestra-server
+    restart: "no"
+    user: "root"
+    command: server standalone
+    depends_on:
+      kestra-postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/app/auth/credentials/service-account.json:ro
+    env_file: .env
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /app/auth/credentials/service-account.json
+      KESTRA_CONFIGURATION: |
+        kestra:
+          repository:
+            type: postgres
+          queue:
+            type: postgres
+          storage:
+            type: gcs
+            gcs:
+              bucket: $${KESTRA_STORAGE_GCS_BUCKET}
+              projectId: $${GCP_PROJECT_ID}
+        datasources:
+          postgres:
+            url: jdbc:postgresql://kestra-postgres:5432/$${POSTGRES_DB}
+            driverClassName: org.postgresql.Driver
+            username: $${POSTGRES_USER}
+            password: $${POSTGRES_PASSWORD}
+    networks:
+      - kestra-network
+
+networks:
+  kestra-network:
+    driver: bridge
+
+volumes:
+  kestra-postgres-data:

@@ -14,7 +14,12 @@ variable "location" {
 }
 
 variable "gcs_bucket_name" {
-  description = "GCS Bucket Name"
+  description = "GCS Bucket Name (Data Lake)"
+  type        = string
+}
+
+variable "kestra_storage_bucket_name" {
+  description = "GCS Bucket Name (Kestra Internal Storage)"
   type        = string
 }
 
