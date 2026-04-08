@@ -66,7 +66,7 @@ def ingest_gbif(scientific_name: str, year: int) -> None:
     pipeline = dlt.pipeline(
         pipeline_name="gbif_pipeline",
         destination="filesystem",
-        dataset_name="gbif_bronze",
+        dataset_name="bronze_gbif",
     )
     print(f"Starting GBIF ingestion: {scientific_name} ({year})")
     result = pipeline.run(source)
