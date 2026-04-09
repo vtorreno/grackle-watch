@@ -832,6 +832,15 @@ wheels = [
 ]
 
 [[package]]
+name = "ebird-api"
+version = "4.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d4/e2/7b6545be5284e67c258a00fb61534f05726b573994c309d6c0df87a7d81d/ebird_api-4.0.0.tar.gz", hash = "sha256:bb37b6779e85549696f3bd0c4d65b1ca4b750958c8a5fef756bfd446a3f7705b", size = 26794, upload-time = "2025-07-09T15:50:35.887Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/de/23/e30539806d86b0c700d713b4b16ecfb898035cfdb9073d820a0f552cbfe9/ebird_api-4.0.0-py3-none-any.whl", hash = "sha256:54d1d7f3b921da59aa93565cca7c4f7665f940d88ac8d410fbd111dac0b4cee9", size = 26559, upload-time = "2025-07-09T15:50:34.347Z" },
+]
+
+[[package]]
 name = "executing"
 version = "2.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1286,6 +1295,7 @@ dependencies = [
     { name = "dbt-bigquery" },
     { name = "dlt", extra = ["bigquery"] },
     { name = "dotenv" },
+    { name = "ebird-api" },
     { name = "google-cloud-bigquery" },
     { name = "google-cloud-storage" },
     { name = "jupyterlab" },
@@ -1305,6 +1315,7 @@ requires-dist = [
     { name = "dbt-bigquery", specifier = ">=1.11.1" },
     { name = "dlt", extras = ["bigquery"], specifier = ">=1.24.0" },
     { name = "dotenv", specifier = ">=0.9.9" },
+    { name = "ebird-api", specifier = ">=4.0.0" },
     { name = "google-cloud-bigquery", specifier = ">=3.40.1" },
     { name = "google-cloud-storage", specifier = ">=3.1.1" },
     { name = "jupyterlab", specifier = ">=4.5.6" },

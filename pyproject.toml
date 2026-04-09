@@ -9,6 +9,7 @@ dependencies = [
     "dbt-bigquery>=1.11.1",
     "dlt[bigquery]>=1.24.0",
     "dotenv>=0.9.9",
+    "ebird-api>=4.0.0",
     "google-cloud-bigquery>=3.40.1",
     "google-cloud-storage>=3.1.1",
     "jupyterlab>=4.5.6",
