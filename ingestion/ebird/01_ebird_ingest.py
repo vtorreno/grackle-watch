@@ -61,7 +61,8 @@ def ingest_ebird(back: int) -> None:
         dataset_name='bronze_ebird'
     )
     print(f'Starting eBird ingestion: {SPECIES_CODE} ({back} days, {len(TARGET_REGIONS)} regions)')
-    result = pipeline.run(ebird_observations(api_key, TARGET_REGIONS, back))
+    # run pipeline to ingest data as parquet
+    result = pipeline.run(ebird_observations(api_key, TARGET_REGIONS, back), loader_file_format='parquet')
     print(result)
 
 if __name__ == '__main__':
