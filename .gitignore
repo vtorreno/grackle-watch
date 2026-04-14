@@ -87,3 +87,12 @@ temp_data/
 *.DS_Store
 Thumbs.db
 *.log
+
+# ==========================================
+# Apache Spark
+# ==========================================
+spark-warehouse/
+derby.log
+metastore_db/
+checkpoint/
+jars/
