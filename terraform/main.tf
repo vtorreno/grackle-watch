@@ -48,20 +48,14 @@ resource "google_storage_bucket" "kestra_storage" {
   public_access_prevention = "enforced"
 }
 
-resource "google_bigquery_dataset" "bronze" {
-  dataset_id                 = var.bq_dataset_bronze
-  location                   = var.location
-  delete_contents_on_destroy = true
-}
-
-resource "google_bigquery_dataset" "silver" {
-  dataset_id                 = var.bq_dataset_silver
-  location                   = var.location
-  delete_contents_on_destroy = true
-}
-
 resource "google_bigquery_dataset" "gold" {
   dataset_id                 = var.bq_dataset_gold
+  location                   = var.location
+  delete_contents_on_destroy = true
+}
+
+resource "google_bigquery_dataset" "external" {
+  dataset_id                 = var.bq_dataset_external
   location                   = var.location
   delete_contents_on_destroy = true
 }
