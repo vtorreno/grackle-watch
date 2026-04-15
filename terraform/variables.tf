@@ -29,17 +29,12 @@ variable "gcs_storage_class" {
   default     = "STANDARD"
 }
 
-variable "bq_dataset_bronze" {
-  description = "BigQuery dataset for Raw data (Bronze layer)"
-  type        = string
-}
-
-variable "bq_dataset_silver" {
-  description = "BigQuery dataset for Cleaned/Transformed data (Silver layer)"
-  type        = string
-}
-
 variable "bq_dataset_gold" {
-  description = "BigQuery dataset for Analytics/Reporting data (Gold layer)"
+  description = "BigQuery dataset for analytical Gold layer models"
+  type        = string
+}
+
+variable "bq_dataset_external" {
+  description = "BigQuery dataset for external tables over GCS Silver Parquet files"
   type        = string
 }
