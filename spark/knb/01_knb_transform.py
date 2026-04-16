@@ -15,7 +15,7 @@ load_dotenv()
 GCS_BUCKET = os.getenv('GCS_BUCKET')
 BRONZE_PATH = f'gs://{GCS_BUCKET}/bronze_knb'
 SILVER_PATH = f'gs://{GCS_BUCKET}/silver_knb'
-JAR_PATH = str(Path(__file__).resolve().parents[2] / 'jars' / 'gcs-connector.jar')
+JAR_PATH = os.getenv('GCS_CONNECTOR_JAR', 'gcs-connector.jar')
 
 WATER_TUBE_COLUMNS = [
     'experiment', 'date', 'batch',
