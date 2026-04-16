@@ -10,7 +10,6 @@ import dlt
 import click
 from dlt.sources.rest_api import rest_api_source
 from dotenv import load_dotenv
-from ebird.api.requests import get_observations
 
 # load credentials from .env file
 load_dotenv()
