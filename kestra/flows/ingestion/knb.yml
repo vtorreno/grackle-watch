@@ -1,0 +1,25 @@
+id: knb_ingestion
+namespace: grackle_watch.ingestion
+
+description: |
+  Uploads KNB behavioral experiment CSV files for Great-tailed Grackle
+  to GCS Bronze layer. 
+
+tasks:
+  - id: ingest_knb
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    containerImage: victoriaaa10/grackle-watch-ingest:latest
+    commands:
+      - |
+        cat <<EOF > sa.json
+        {{ kv("GOOGLE_APPLICATION_CREDENTIALS") }}
+        EOF
+      - python -c "import json; json.load(open('sa.json')); print('VALID JSON')"
+      - mkdir -p data
+      - cp water_tube.csv color_test.csv interaction.csv data/
+      - python 01_knb_ingest.py
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: "sa.json"
+      GCS_BUCKET: "{{ kv('GCS_BUCKET') }}"

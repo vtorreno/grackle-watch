@@ -1,0 +1,37 @@
+id: gbif_ingestion
+namespace: grackle_watch.ingestion
+
+description: |
+  Ingests Great-tailed Grackle occurrence records from the GBIF API
+  for a given year and writes raw Parquet files to GCS Bronze layer.
+
+inputs:
+  - id: year
+    type: INT
+    defaults: 2025
+    description: "Occurrence filter year"
+
+tasks:
+  - id: ingest_gbif
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    containerImage: victoriaaa10/grackle-watch-ingest:latest
+    commands:
+      - |
+        cat <<EOF > sa.json
+        {{ kv("GOOGLE_APPLICATION_CREDENTIALS") }}
+        EOF
+      - python -c "import json; json.load(open('sa.json')); print('VALID JSON')"
+      - python 01_gbif_ingest.py --year {{ inputs.year }}
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: "sa.json"
+      DESTINATION__FILESYSTEM__BUCKET_URL: "{{ kv('DESTINATION__FILESYSTEM__BUCKET_URL') }}"
+      DATA_WRITER__FILE_FORMAT: "parquet"
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 0 1 1 *"  # runs annually on January 1st at midnight
+    inputs:
+      year: "{{ trigger.date | date('yyyy') | int - 1 }}"  # ingest previous year
