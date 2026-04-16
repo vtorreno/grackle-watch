@@ -18,4 +18,6 @@ models:
     staging:
       +materialized: view
     gold:
-      +materialized: table      
+      +materialized: table
+      fct_observations:
+        +materialized: table      

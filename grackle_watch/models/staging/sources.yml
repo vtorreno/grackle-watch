@@ -1,0 +1,16 @@
+sources:
+  - name: grackle_watch_external
+    description: 'External tables over GCS Silver layer for dbt staging.'
+    database: grackle-watch
+    schema: grackle_watch_external
+    tables:
+      - name: gbif
+        description: "Cleaned GBIF occurrence records for Quiscalus mexicanus (2025)."
+      - name: ebird
+        description: "Cleaned eBird sighting records across 5 US states, rolling 30-day window."
+      - name: knb_water_tube
+        description: "KNB water tube behavioral experiment using the Aesop's Fable paradigm."
+      - name: knb_color_test
+        description: "KNB color association test using a reversal learning experiment design."
+      - name: knb_interaction
+        description: "KNB spatial preference trials recording first approach direction per subject."

@@ -1,5 +1,6 @@
+-- stg_gbif.sql
 with source as (
-    select * from {{ source('grackle_watch_external', 'gbif_silver') }}
+    select * from {{ source('grackle_watch_external', 'gbif') }}
 ),
 
 staged as (

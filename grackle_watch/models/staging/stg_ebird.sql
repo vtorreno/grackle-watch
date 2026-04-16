@@ -1,3 +1,4 @@
+-- stg_ebird.sql
 with source as (
     select * from {{ source('grackle_watch_external', 'ebird') }}
 ),

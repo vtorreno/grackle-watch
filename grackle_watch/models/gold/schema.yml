@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: fct_observations
+    description: "Unified observation fact table combining GBIF and eBird sightings."
+    columns:
+      - name: observation_id
+        description: "Surrogate key for each observation record."
+        tests:
+          - unique
+          - not_null
+      - name: sighting_id
+        description: "Original source identifier cast to string for cross-source compatibility."
+        tests:
+          - not_null
+      - name: data_source
+        description: "Source: GBIF or eBird."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['GBIF', 'eBird']
+
+  - name: mart_monthly_sighting_trends
+    description: "Monthly sighting counts and flock size metrics across GBIF and eBird."
+
+  - name: mart_subject_learning_curves
+    description: "Per-trial success rate and cumulative learning curve per subject across water tube and color test experiments."
+
+  - name: mart_spatial_preference
+    description: "Approach direction frequency and spatial bias analysis per subject from KNB interaction trials."
