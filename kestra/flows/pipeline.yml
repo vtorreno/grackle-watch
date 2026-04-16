@@ -1,0 +1,53 @@
+id: grackle_watch_pipeline
+namespace: grackle_watch
+
+description: |
+  Master pipeline for Grackle Watch. Orchestrates GBIF, eBird, and KNB ingestion,
+  Spark Bronze to Silver transformation, and dbt Gold layer in sequence.
+  Runs annually on January 1st at 1am. Use manual_year input for ad-hoc runs.
+
+inputs:
+  - id: manual_year
+    type: INT
+    defaults: 2025
+    description: "Target ingestion year for manual runs"
+
+tasks:
+  - id: ingest_gbif
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: grackle_watch.ingestion
+    flowId: gbif_ingestion
+    inputs:
+      year: "{{ trigger is defined ? (trigger.date | date('yyyy') | int - 1) : inputs.manual_year }}"
+    wait: true
+
+  - id: ingest_ebird
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: grackle_watch.ingestion
+    flowId: ebird_ingestion
+    inputs:
+      back: 30
+    wait: true
+
+  - id: ingest_knb
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: grackle_watch.ingestion
+    flowId: knb_ingestion
+    wait: true
+
+  - id: spark_transform
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: grackle_watch.processing
+    flowId: spark_transform
+    wait: true
+
+  - id: dbt_transform
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: grackle_watch.transformation
+    flowId: dbt_transform
+    wait: true
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 1 1 1 *"  # runs annually on January 1st at 1am
