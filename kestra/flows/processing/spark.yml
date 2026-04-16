@@ -1,0 +1,57 @@
+id: spark_transform
+namespace: grackle_watch.processing
+
+description: |
+  Runs Bronze → Silver Spark transformation jobs for all three sources.
+  Reads raw Parquet/CSV files from GCS Bronze and writes cleaned,
+  standardized Parquet files to GCS Silver layer.
+
+tasks:
+  - id: transform_gbif
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    containerImage: victoriaaa10/grackle-watch-spark:latest
+    commands:
+      - |
+        cat <<EOF > sa.json
+        {{ kv("GOOGLE_APPLICATION_CREDENTIALS") }}
+        EOF
+      - python -c "import json; json.load(open('sa.json')); print('VALID JSON')"
+      - uv run python 01_gbif_transform.py
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: "sa.json"
+      GCS_BUCKET: "{{ kv('GCS_BUCKET') }}"
+
+  - id: transform_ebird
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    containerImage: victoriaaa10/grackle-watch-spark:latest
+    commands:
+      - |
+        cat <<EOF > sa.json
+        {{ kv("GOOGLE_APPLICATION_CREDENTIALS") }}
+        EOF
+      - python -c "import json; json.load(open('sa.json')); print('VALID JSON')"
+      - uv run python 01_ebird_transform.py
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: "sa.json"
+      GCS_BUCKET: "{{ kv('GCS_BUCKET') }}"
+
+  - id: transform_knb
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    containerImage: victoriaaa10/grackle-watch-spark:latest
+    commands:
+      - |
+        cat <<EOF > sa.json
+        {{ kv("GOOGLE_APPLICATION_CREDENTIALS") }}
+        EOF
+      - python -c "import json; json.load(open('sa.json')); print('VALID JSON')"
+      - uv run python 01_knb_transform.py
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: "sa.json"
+      GCS_BUCKET: "{{ kv('GCS_BUCKET') }}"
+      GCS_CONNECTOR_JAR: "gcs-connector.jar"
