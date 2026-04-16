@@ -1,0 +1,40 @@
+id: dbt_transform
+namespace: grackle_watch.transformation
+
+description: |
+  Runs dbt Gold layer transformations on BigQuery.
+  Builds all staging views and Gold fact/mart tables
+  from Silver external tables.
+
+tasks:
+  - id: dbt_run
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    containerImage: python:3.13-slim
+    commands:
+      - pip install dbt-core dbt-bigquery -q
+      - |
+        cat <<EOF > sa.json
+        {{ kv("GOOGLE_APPLICATION_CREDENTIALS") }}
+        EOF
+      - python -c "import json; json.load(open('sa.json')); print('VALID JSON')"
+      - |
+        cat <<EOF > profiles.yml
+        grackle_watch:
+          target: prod
+          outputs:
+            prod:
+              type: bigquery
+              method: service-account
+              project: {{ kv('GCP_PROJECT_ID') }}
+              dataset: grackle_watch_gold
+              threads: 4
+              keyfile: sa.json
+              location: US
+        EOF
+      - dbt deps --profiles-dir .
+      - dbt run --profiles-dir .
+      - dbt test --profiles-dir .
+    env:
+      GCP_PROJECT_ID: "{{ kv('GCP_PROJECT_ID') }}"
