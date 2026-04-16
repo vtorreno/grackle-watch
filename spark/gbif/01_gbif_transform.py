@@ -16,7 +16,7 @@ load_dotenv()
 GCS_BUCKET = os.getenv('GCS_BUCKET')
 BRONZE_PATH = f'gs://{GCS_BUCKET}/bronze_gbif/gbif_occurrences'
 SILVER_PATH = f'gs://{GCS_BUCKET}/silver_gbif'
-JAR_PATH = str(Path(__file__).resolve().parents[2] / 'jars' / 'gcs-connector.jar')
+JAR_PATH = os.getenv('GCS_CONNECTOR_JAR', 'gcs-connector.jar')
 
 SILVER_COLUMNS = [
     'gbif_id', 'occurrence_id',
