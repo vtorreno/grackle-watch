@@ -1,7 +1,7 @@
 # Grackle Watch
 
-> **Multi-source medallion data pipeline for ecological analysis of the Great-tailed Grackle (*Quiscalus mexicanus*)**  
-Integrates GBIF, eBird, and KNB datasets through a Bronze → Silver → Gold architecture using industry-standard tools.
+> Multi-source medallion data pipeline for ecological analysis of the Great-tailed Grackle (*Quiscalus mexicanus*)  
+> Integrates GBIF, eBird, and KNB datasets through a Bronze → Silver → Gold architecture using industry-standard tools.
 
 **DataTalks.Club Data Engineering Capstone 2026 · Developed by [Victoria Torreno](https://github.com/vtorreno)**
 
