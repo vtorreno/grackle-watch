@@ -1,23 +1,33 @@
-# Grackle Watch: Multi-Source Medallion Data Pipeline
+# Grackle Watch
 
-End-to-end data engineering pipeline for analyzing Great-tailed Grackle (*Quiscalus mexicanus*) sightings and behavioral experiments across the United States. Integrates three independent data sources through a Bronze → Silver → Gold architecture using industry-standard tools.
+> **Multi-source medallion data pipeline for ecological analysis of the Great-tailed Grackle (*Quiscalus mexicanus*)**  
+Integrates GBIF, eBird, and KNB datasets through a Bronze → Silver → Gold architecture using industry-standard tools.
 
-**DataTalks.Club Data Engineering Capstone 2026**
-Developed by [Victoria Torreno](https://github.com/vtorreno)
+**DataTalks.Club Data Engineering Capstone 2026 · Developed by [Victoria Torreno](https://github.com/vtorreno)**
 
 ---
 
 ## Table of Contents
+
+### Overview
 - [Dashboard](#dashboard)
-- [Problem Description](#problem-description)
+- [Problem Statement](#problem-statement)
+
+### System Design
 - [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Data Sources](#data-sources)
 - [Pipeline Overview](#pipeline-overview)
-- [Data Warehouse](#data-warehouse)
-- [Prerequisites](#prerequisites)
 - [Data Modeling](#data-modeling)
+
+### Data
+- [Data Sources](#data-sources)
+- [Data Warehouse](#data-warehouse)
+
+### Engineering
+- [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
+
+### Getting Started
+- [Prerequisites](#prerequisites)
 
 ---
 
@@ -25,10 +35,10 @@ Developed by [Victoria Torreno](https://github.com/vtorreno)
 
 [View Live Dashboard](https://datastudio.google.com/s/spKRTuhL728)
 
-<p align="center">
-  <img src="images/learning_curves.png" width="48%">
-  &nbsp;
-  <img src="images/monthly_sightings.png" width="48%">
+<p align='center'>
+  <img src='images/learning_curves.png' height='350px' alt='Subject Learning Performance'>
+  &nbsp;&nbsp;
+  <img src='images/monthly_sightings.png' height='350px' alt='Monthly Grackle Sightings'>
 </p>
 
 **Subject Learning Performance by Experiment Type (Categorical)**  
@@ -39,15 +49,15 @@ GBIF provides full 2025 annual coverage. eBird reflects a rolling 30-day window 
 
 ---
 
-## Problem Description
+## Problem Statement
 
-The Great-tailed Grackle (*Quiscalus mexicanus*) is one of North America's fastest-expanding bird species, yet its behavioral flexibility remains understudied at scale. This project builds an end-to-end data pipeline integrating three independent data sources to analyze both the geographic spread of grackle sightings and the cognitive performance of individual subjects in controlled behavioral experiments.
+The Great-tailed Grackle (*Quiscalus mexicanus*) is a rapidly expanding North American bird species, yet its behavioral flexibility remains understudied at scale.
 
-This pipeline answers:
-- Where and when are Great-tailed Grackles most active across the United States?
-- How do sighting patterns shift seasonally across GBIF and eBird sources?
-- Do individual grackles show measurable learning curves across tool use and color discrimination tasks?
-- Do grackles exhibit consistent spatial bias in approach direction during foraging trials?
+This project builds a multi-source data pipeline to analyze:
+- Geographic spread of grackle sightings
+- Seasonal and temporal movement patterns
+- Cognitive performance in controlled behavioral experiments
+- Spatial bias during foraging and tool-use tasks
 
 ---
 
@@ -55,7 +65,7 @@ This pipeline answers:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                         Grackle Watch Pipeline                       │
+│                         Grackle Watch Pipeline                      │
 └─────────────────────────────────────────────────────────────────────┘
 
   SOURCES              BRONZE              SILVER              GOLD
@@ -67,9 +77,9 @@ This pipeline answers:
   KNB CSVs  ──┘
 
                     ┌─────────────────────────────────┐
-                    │  Kestra (Orchestration)          │
-                    │  Terraform (Infrastructure)      │
-                    │  Docker (Containerization)       │
+                    │  Kestra (Orchestration)         │
+                    │  Terraform (Infrastructure)     │
+                    │  Docker (Containerization)      │
                     └─────────────────────────────────┘
 
                                                             │
@@ -98,15 +108,14 @@ This pipeline answers:
 
 ## Data Sources
 
-| Source     | Description                       | Volume                 |
-|------------|-----------------------------------|------------------------|
+| Source | Description | Volume |
+|--------|-------------|--------|
 | [GBIF API](https://www.gbif.org/) | Occurrence records for *Quiscalus mexicanus* | ~100k records (2025) |
-| [eBird API 2.0](https://documenter.getpostman.com/view/664302/S1ENwy59) | Recent sightings across 5 US states | Rolling 30-day window |
-| [KNB (Logan 2015)](https://knb.ecoinformatics.org/view/doi:10.5063/F13B5XBC) | Behavioral experiment data for 8 subjects | 1,899 rows across 3 files |
+| [eBird API 2.0](https://documenter.getpostman.com/view/664302/S1ENwy59) | Recent bird sightings across five US states | Rolling 30-day window |
+| [KNB (Logan 2015)](https://knb.ecoinformatics.org/view/doi:10.5063/F13B5XBC) | Behavioral experiment datasets across 8 subjects | 1,899 rows (3 files) |
                                                                         
 ---
 
-```markdown
 ## Prerequisites
 
 - Google Cloud account with billing enabled
@@ -118,16 +127,16 @@ This pipeline answers:
 
 ---
 
-### Step 1. Clone the Repository
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/vtorreno/grackle-watch.git
 cd grackle-watch
 ```
 
-### Step 2. Set Up Environment Variables
+### 2. Configure Environment Variables
 
-**Copy and configure** the environment file:
+Copy and configure the environment file:
 
 ```bash
 cp .env.example .env
@@ -142,7 +151,7 @@ DESTINATION__FILESYSTEM__BUCKET_URL=gs://your-bucket-name
 GCS_CONNECTOR_JAR=/path/to/jars/gcs-connector.jar
 ```
 
-### Step 3. Download GCS Connector JAR
+### 3. Download GCS Connector JAR
 
 ```bash
 mkdir -p jars
@@ -150,9 +159,9 @@ curl -L https://repo1.maven.org/maven2/com/google/cloud/bigdataoss/gcs-connector
      -o jars/gcs-connector.jar
 ```
 
-### Step 4. Provision Infrastructure
+### 4. Provision Infrastructure
 
-**Create** a `terraform.tfvars` file in the `terraform/` directory:
+Create a `terraform.tfvars` file in the `terraform/` directory:
 
 ```hcl
 project                    = "your-gcp-project-id"
@@ -164,7 +173,7 @@ bq_dataset_gold            = "grackle_watch_gold"
 bq_dataset_external        = "grackle_watch_external"
 ```
 
-**Initialize and apply** Terraform:
+Initialize and apply Terraform:
 
 ```bash
 cd terraform
@@ -173,15 +182,15 @@ terraform plan
 terraform apply
 ```
 
-### Step 5. Install Dependencies
+### 5. Install Dependencies
 
 ```bash
 uv sync
 ```
 
-### Step 6. Start Kestra
+### 6. Start Kestra
 
-**Start** the orchestration server:
+Start the orchestration server:
 
 ```bash
 docker compose up -d
@@ -189,14 +198,14 @@ docker compose up -d
 
 Open http://localhost:8080.
 
-### Step 7. Run the Pipeline
+### 7. Run the Pipeline
 
-**Option A — Via Kestra UI (recommended)**
+Option A — Via Kestra UI (recommended)
 1. Upload namespace files (ingestion scripts, Spark scripts, dbt files, KNB CSVs, GCS connector JAR)
 2. Configure KV store with required secrets
 3. Execute `grackle_watch_pipeline` flow
 
-**Option B — Run locally**
+Option B — Run locally
 
 ```bash
 # ingestion
@@ -256,28 +265,31 @@ OPTIONS (format = 'PARQUET', uris = ['gs://<bucket>/silver_knb/interaction/*']);
 ```
 
 </details>
-```
 
 ---
 
 ## Pipeline Overview
 
-This project uses a **batch pipeline** with the following schedule:
+This project uses a **batch-oriented data pipeline** orchestrated on scheduled and event-based triggers.
 
-| Source | Schedule |
-|---|---|
-| GBIF | Annually on January 1st |
-| eBird | Daily at midnight |
-| KNB | One-time upload |
-| Spark + dbt | After ingestion completes |
+### Ingestion Schedule
 
-Data flows through three layers:
+- **GBIF** → Annual batch (January 1st)
+- **eBird** → Daily ingestion (midnight)
+- **KNB** → One-time static upload
+- **Spark + dbt** → Triggered after successful ingestion completion
 
-| Layer | Storage |
-|---|---|
-| Bronze (raw) | GCS |
-| Silver (clean) | GCS |
-| Gold (model) | BigQuery |
+---
+
+### Data Flow Architecture
+
+Data is processed through a **medallion architecture**:
+
+| Layer   | Storage Layer | Description |
+|---------|--------------|-------------|
+| Bronze  | GCS          | Raw ingested data (unchanged source format) |
+| Silver  | GCS          | Cleaned and standardized datasets |
+| Gold    | BigQuery     | Modeled analytics-ready tables |
 
 ---
 
