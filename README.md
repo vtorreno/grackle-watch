@@ -8,12 +8,16 @@ Developed by [Victoria Torreno](https://github.com/vtorreno)
 ---
 
 ## Table of Contents
+- [Dashboard](#dashboard)
 - [Problem Description](#problem-description)
 - [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Data Sources](#data-sources)
 - [Pipeline Overview](#pipeline-overview)
 - [Data Warehouse](#data-warehouse)
+- [Prerequisites](#prerequisites)
+- [Data Modeling](#data-modeling)
+- [Project Structure](#project-structure)
 
 ---
 
@@ -22,14 +26,15 @@ Developed by [Victoria Torreno](https://github.com/vtorreno)
 [View Live Dashboard](https://datastudio.google.com/s/spKRTuhL728)
 
 <p align="center">
-  <img src="images/learning_curves.png" width="45%">
-  <img src="images/monthly_sightings.png" width="45%">
+  <img src="images/learning_curves.png" width="48%">
+  &nbsp;
+  <img src="images/monthly_sightings.png" width="48%">
 </p>
 
-**Tile 1 (Categorical):** Subject Learning Performance by Experiment Type
+**Subject Learning Performance by Experiment Type (Categorical)**  
 Cumulative success rates per bird across the Aesop's Fable Task and Color Reversal Task.
 
-**Tile 1 (Temporal):** Monthly Grackle Sightings by Source
+**Monthly Grackle Sightings by Source (Temporal)**  
 GBIF provides full 2025 annual coverage. eBird reflects a rolling 30-day window due to API limitations.
 
 ---
@@ -48,6 +53,7 @@ This pipeline answers:
 
 ## Architecture
 
+```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         Grackle Watch Pipeline                       │
 └─────────────────────────────────────────────────────────────────────┘
@@ -68,6 +74,7 @@ This pipeline answers:
 
                                                             │
                                                        Data Studio
+```
 
 ---
 
@@ -265,9 +272,12 @@ This project uses a **batch pipeline** with the following schedule:
 | Spark + dbt | After ingestion completes |
 
 Data flows through three layers:
-1. Bronze (raw)    GCS
-2. Silver (clean)  GCS
-3. Gold (model)    BigQuery
+
+| Layer | Storage |
+|---|---|
+| Bronze (raw) | GCS |
+| Silver (clean) | GCS |
+| Gold (model) | BigQuery |
 
 ---
 
