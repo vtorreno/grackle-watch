@@ -36,9 +36,9 @@
 [View Live Dashboard](https://datastudio.google.com/s/spKRTuhL728)
 
 <p align='center'>
-  <img src='images/learning_curves.png' height='350px' alt='Subject Learning Performance'>
-  &nbsp;&nbsp;
-  <img src='images/monthly_sightings.png' height='350px' alt='Monthly Grackle Sightings'>
+  <img src='images/learning_curves.png' height='300px' alt='Subject Learning Performance'>
+  &nbsp;&nbsp;&nbsp;
+  <img src='images/monthly_sightings.png' height='300px' alt='Monthly Grackle Sightings'>
 </p>
 
 **Subject Learning Performance by Experiment Type (Categorical)**  
