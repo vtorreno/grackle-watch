@@ -50,10 +50,12 @@ select
     correct_choices,
     success_rate,
     round(
-        avg(success_rate) over (
-            partition by bird, experiment_type
-            order by trial
-            rows between unbounded preceding and current row
+        least(
+            avg(success_rate) over (
+                partition by bird, experiment_type
+                order by trial
+                rows between unbounded preceding and current row
+            ), 1.0
         ), 4
     ) as cumulative_success_rate
 from aggregated

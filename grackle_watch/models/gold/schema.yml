@@ -25,6 +25,14 @@ models:
 
   - name: mart_subject_learning_curves
     description: "Per-trial success rate and cumulative learning curve per subject across water tube and color test experiments."
+    columns:
+      - name: cumulative_success_rate
+        description: "Rolling average success rate per bird per experiment type, capped at 1.0 (100%)."
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
 
   - name: mart_spatial_preference
     description: "Approach direction frequency and spatial bias analysis per subject from KNB interaction trials."
